@@ -1,0 +1,55 @@
+
+body {
+  background-color: #1b2131;
+  color: white;
+  margin: 0;
+}
+
+.app {
+  width: 100vw;
+  min-height: 100vh;
+  position: relative;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: #424252 1px solid;
+
+  .header-left {
+    font-family: 'Cambria';
+    font-size: 30px;
+  }
+
+  .header-right {
+  }
+
+  nav {
+    margin: auto;
+    a {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 20px;
+      color: white;
+      text-decoration: none;
+      padding: 0 20px;
+    }
+  
+    a.active {
+      color: cyan;
+    }
+  }
+
+}
+
+.footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+.main {
+  padding: 0 10px;
+}
