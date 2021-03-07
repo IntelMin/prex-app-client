@@ -1,0 +1,16 @@
+
+$back: #1b2131;
+$line: #424252;
+
+.modal-content {
+  background-color: $back;
+}
+
+.modal-header {
+  border-bottom-color: $line;
+}
+
+.smart-shadow {
+  border-color: transparent;
+  box-shadow: 4px 4px 8px 0 #000, -4px -4px 8px 0 hsla(0, 0%, 100%, .1);
+}

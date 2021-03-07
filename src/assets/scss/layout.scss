@@ -1,6 +1,6 @@
 
 body {
-  background-color: #1b2131;
+  background-color: $back;
   color: white;
   margin: 0;
 }
@@ -17,7 +17,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 15px 20px;
-  border-bottom: #424252 1px solid;
+  border-bottom: $line 1px solid;
 
   .header-left {
     font-family: 'Cambria';
@@ -25,6 +25,14 @@ body {
   }
 
   .header-right {
+    padding: 0;
+
+    .wallet-button {
+      font-size: 20px;
+      border-radius: 15px;
+      background-color: #242020;
+      color: cyan;
+    }
   }
 
   nav {
@@ -41,7 +49,6 @@ body {
       color: cyan;
     }
   }
-
 }
 
 .footer {
@@ -52,4 +59,21 @@ body {
 
 .main {
   padding: 0 10px;
+}
+
+.connect-modal {
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .connect-btn {
+    padding: 5px 0;
+    button {
+      width: 200px;
+      color: white;
+      border-radius: 6px;
+    }
+  }
 }

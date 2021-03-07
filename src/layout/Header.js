@@ -1,13 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useWallet } from 'use-wallet';
 import { connect } from 'react-redux';
 import { NavLink } from "react-router-dom";
-import { setNavPage } from "../redux/actions";
+import { setNavPage, setWallet } from "../redux/actions";
+import { Image, Button } from 'react-bootstrap';
+import icon from '../assets/images/favicon.ico';
+import ConnectModal from '../components/modals/ConnectModal';
 
 function Header(props) {
+
+  const wallet = useWallet();
+  const [modalShow, setModalShow] = useState(false);
+  const handleClose = () => setModalShow(false);
+  const handleShow = () => setModalShow(true);
+  const onBtnClick = () => {
+    if (props.wallet)
+      wallet.reset();
+    else 
+      handleShow();
+  }
+  console.log(window.ethereum);
+  console.log(window.web3);
+  useEffect(() => {
+    if (wallet.status === "connected")
+      props.setWallet(wallet);
+    else if (wallet.status === "disconnected")
+      props.setWallet(null);
+  }, [wallet.status]);
 
   return (
     <div className="header">
       <div className="header-left">
+        <Image src={icon} width={40} height={40}/>
         PREX
       </div>
       <nav>
@@ -25,14 +49,20 @@ function Header(props) {
         </NavLink>
       </nav>
       <div className="header-right">
+        <Button className="wallet-button" variant="info" onClick={onBtnClick}>
+          {props.wallet?"Disconnect Wallet":"Connect Wallet"}
+        </Button>
       </div>
+      <ConnectModal show={modalShow} handleClose={handleClose}/>
     </div>
   );
 }
 
 const mapStateToProps = (state) => {
   const { nav_page } = state.Layout;
-  return { nav_page };
+  const { wallet } = state.Blockchain;
+
+  return { nav_page, wallet };
 };
 
-export default connect(mapStateToProps, { setNavPage })(Header);
+export default connect(mapStateToProps, { setNavPage, setWallet })(Header);

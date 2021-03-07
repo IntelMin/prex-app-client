@@ -1,16 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import configureStore from './redux';
 import { Provider } from 'react-redux';
+import 'bootstrap/dist/css/bootstrap.css';
+import App from './App';
+import { UseWalletProvider } from 'use-wallet';
+import { WEB3_PROVIDER_URL } from './config';
+import { WalletProvider } from './components/contexts';
 
 ReactDOM.render(
-  <React.StrictMode>
+  <UseWalletProvider
+    chainId={42}
+    connectors={{
+      walletconnect: {
+        rpcUrl: WEB3_PROVIDER_URL
+      }
+    }}
+  >
     <Provider store={configureStore()}>
-      <App />
+      <WalletProvider>
+        <App />
+      </WalletProvider>
     </Provider>
-  </React.StrictMode>,
+  </UseWalletProvider>,
   document.getElementById('root')
 );
 
