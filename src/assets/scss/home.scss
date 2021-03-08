@@ -1,0 +1,27 @@
+
+
+.main-container {
+  padding: 20px 50px;
+}
+
+.wallet-desc {
+
+  margin-left: auto;
+  float: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  .wallet-address {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: cyan;
+  }
+  .wallet-asset {
+    font-size: 15px;
+    color: darkgray;
+  }
+}

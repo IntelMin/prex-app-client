@@ -19,13 +19,13 @@ function Header(props) {
     else 
       handleShow();
   }
-  console.log(window.ethereum);
-  console.log(window.web3);
   useEffect(() => {
-    if (wallet.status === "connected")
-      props.setWallet(wallet);
-    else if (wallet.status === "disconnected")
+    if (wallet.status === "connected") {
+      props.setWallet(wallet);   
+    }
+    else if (wallet.status === "disconnected") {
       props.setWallet(null);
+    }
   }, [wallet.status]);
 
   return (
