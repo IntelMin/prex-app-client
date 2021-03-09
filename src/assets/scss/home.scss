@@ -66,6 +66,10 @@
   min-width: 50px;
 }
 
+.no-max-width {
+  max-width: none;
+}
+
 .mt-10 {
   margin-top: 10px;
 }
@@ -99,7 +103,7 @@ $tr_radius: 10px;
 $btn_radius: 5px;
 
 .prediction-table {
-  font-size: 20px;
+  font-size: 18px;
   color: lightgray;
   th, td {
     padding: 10px 20px;
@@ -108,7 +112,7 @@ $btn_radius: 5px;
     font-weight: normal;
     height: 1px;
   }
-  tr {
+  tbody tr {
     background-color: #161824;
     border-color: transparent;
     box-shadow: 4px 4px 8px 0 #000, -4px -4px 8px 0 hsla(0, 0%, 100%, .1);
@@ -126,17 +130,30 @@ $btn_radius: 5px;
     border-radius: $tr_radius 0 0 $tr_radius;
     -moz-border-radius:$tr_radius 0 0 $tr_radius;
     -webkit-border-radius:$tr_radius 0 0 $tr_radius;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    text-align: center;
     .option-icon {
       margin-right: 10px;
     }
   }
+  
   td:last-child{
     border-radius: 0 $tr_radius $tr_radius 0;
     -moz-border-radius:0 $tr_radius $tr_radius 0;
     -webkit-border-radius:0 $tr_radius $tr_radius 0;
+  }
+
+  .option-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .option-desc {
+    color: gray;
+    font-size: 14px;
   }
 
   .here-button {

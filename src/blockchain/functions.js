@@ -60,7 +60,7 @@ const getCurrentMarketData = async () => {
   return {marketData, predictionData};
 }
 
-const utils = {
+const functions = {
   getWeb3,
   getAccount,
   getEthBalance,
@@ -69,4 +69,4 @@ const utils = {
   getCurrentMarketData
 };
 
-export default utils;
+export default functions;

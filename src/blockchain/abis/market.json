@@ -116,6 +116,28 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "name": "totalParticipants",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "totalStaked",
+        "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "name": "userStaked",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "PredictionDataUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "name": "previousOwner",
         "type": "address"
@@ -244,15 +266,15 @@
     "name": "getPredictionData",
     "outputs": [
       {
-        "name": "",
+        "name": "totalParticipants",
         "type": "uint256"
       },
       {
-        "name": "",
+        "name": "totalStaked",
         "type": "uint256[]"
       },
       {
-        "name": "",
+        "name": "userStaked",
         "type": "uint256[]"
       }
     ],

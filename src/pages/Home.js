@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { connect } from 'react-redux';
 import { Container, Row } from 'react-bootstrap';
-import utils from "../blockchain/utils";
+import functions from "../blockchain/functions";
 import MarketDataDisplay from "../components/home/MarketDataDisplay";
 import PredictionDataDisplay from "../components/home/PredictionDataDisplay";
+import utils from '../helpers/utils';
 
 const Home = (props) => {
   
@@ -14,11 +15,11 @@ const Home = (props) => {
 
   useEffect(() => {
     if (wallet) {
-      utils.getAccountInfo()
+      functions.getAccountInfo()
         .then(info => {
           setAccountInfo(info);
         });
-      utils.getCurrentMarketData()
+      functions.getCurrentMarketData()
         .then(res => {
           console.log(res);
           setMarketData(res.marketData);
@@ -36,16 +37,15 @@ const Home = (props) => {
     )
   }
 
-  const account = utils.getAccount();
-  
+  const account = functions.getAccount(); 
 
   return (
     <Container fluid className="main-container">
       <Row>
         <div className="wallet-desc">
           <span className="wallet-address">{account}</span>
-          <span className="wallet-asset">{Number(accountInfo.eth_balance).toFixed(4)} ETH</span>
-          <span className="wallet-asset">{Number(accountInfo.dai_balance).toFixed(4)} DAI</span>
+          <span className="wallet-asset">{utils.cut(accountInfo.eth_balance)} ETH</span>
+          <span className="wallet-asset">{utils.cut(accountInfo.dai_balance)} DAI</span>
         </div>
       </Row>
       {
@@ -57,7 +57,7 @@ const Home = (props) => {
       {
         predictionData && 
           <Row>
-            <PredictionDataDisplay data={predictionData} maxAsset={Number(accountInfo.dai_balance)} />
+            <PredictionDataDisplay data={predictionData} maxAsset={Number(accountInfo.dai_balance)} marketData={marketData} />
           </Row>
       }
       

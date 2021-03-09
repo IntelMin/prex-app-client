@@ -1,10 +1,10 @@
 
-import utils from '../utils';
+import functions from '../functions';
 
 class Contract {
 
   constructor() {
-    this.web3 = utils.getWeb3();
+    this.web3 = functions.getWeb3();
   }
 }
 

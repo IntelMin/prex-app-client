@@ -4,10 +4,11 @@ import neutral_icon from  "../../assets/images/neutral.png";
 import bearish_icon from  "../../assets/images/bearish.png";
 import { Image, Container, Row, Button } from 'react-bootstrap';
 import StakeForm from './StakeForm';
+import utils from '../../helpers/utils';
 
 const PredictionDataDisplay = (props) => {
 
-  const {data, maxAsset} = props;
+  const {data, maxAsset, marketData} = props;
   const totalUsers = Number(data[0]);
   const totalStaked = data[1];
   var totalStakedSum = 0;
@@ -19,46 +20,51 @@ const PredictionDataDisplay = (props) => {
     userStakedSum += Number(userStaked[i]);
 
   const options = [
-    {title: "Bullish", icon: bullish_icon},
-    {title: "Neutral", icon: neutral_icon},
-    {title: "Bearish", icon: bearish_icon}
+    {title: "Bullish", icon: bullish_icon, description: ">$" + marketData.neutralMaxValue},
+    {title: "Neutral", icon: neutral_icon, description: "$" + marketData.neutralMinValue + " to $" + marketData.neutralMaxValue},
+    {title: "Bearish", icon: bearish_icon, description: "<$" + marketData.neutralMinValue}
   ];
   return (
-    <Container className="no-padding">
+    <Container className="no-padding no-max-width">
       <Row className="mt-10">
         <span className="title">Prediction</span>
       </Row>
       <Row>
         <span className="label">Participants:</span><span className="value">{totalUsers}</span>
-        <span className="label ml-20">Total Staked:</span><span className="value">{totalStakedSum}</span>
-        <span className="label ml-20">You Staked:</span><span className="value">{userStakedSum}</span>
+        <span className="label ml-20">Total Staked:</span><span className="value">{utils.cut(totalStakedSum)} DAI</span>
+        <span className="label ml-20">You Staked:</span><span className="value">{utils.cut(userStakedSum)} DAI</span>
           <span className="subvalue">({(userStakedSum*100/totalStakedSum).toFixed(2)}% of total)</span>
       </Row>
       <Row className="mt-10">
         <table className="prediction-table">
           <thead>
-            <th></th>
-            <th>Total Staked</th>
-            <th>You Staked</th>
+            <tr>
+              <th></th>
+              <th>Total Staked</th>
+              <th>You Staked</th>
+            </tr>
           </thead>
           <tbody>
             {
               options.map((option, index) => {
                 return (
                   <>
-                  <tr class="spacer"></tr>
+                  <tr className="spacer"></tr>
                   <tr>
-                    <td><Image className="option-icon" src={option.icon} width={20} height={20} />{option.title}</td>
-                    <td>{totalStaked[index]}</td>
+                    <td style={{maxWidth: 150}}>
+                      <div className="option-title"><Image className="option-icon" src={option.icon} width={20} height={20} />{option.title}</div>
+                      <div className="option-desc">{option.description}</div>
+                    </td>
+                    <td>{utils.cut(totalStaked[index])} DAI</td>
                     <td>
-                      {userStaked[index]}
-                      <span className="subvalue">({(userStaked[index]*100/totalStaked[index]).toFixed(2)}% of option)</span>
+                      {utils.cut(userStaked[index])} DAI
+                      <span className="subvalue">({(userStaked[index]*100/totalStaked[index]).toFixed(2)}%)</span>
                     </td>
                     <td>
                       <StakeForm max={maxAsset}/>
                     </td>
                   </tr>
-                  <tr class="spacer"></tr>
+                  <tr className="spacer"></tr>
                   </>
                 );
               })
