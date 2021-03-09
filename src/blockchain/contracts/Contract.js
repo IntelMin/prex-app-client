@@ -1,8 +1,10 @@
 
+import utils from '../utils';
+
 class Contract {
 
-  constructor(web3) {
-    this.web3 = web3;
+  constructor() {
+    this.web3 = utils.getWeb3();
   }
 }
 

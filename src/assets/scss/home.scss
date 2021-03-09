@@ -25,3 +25,150 @@
     color: darkgray;
   }
 }
+
+.no-padding {
+  padding: 0;
+}
+
+.market-info-table {
+  font-size: 20px;
+  color: lightgray;
+  
+  td {
+    border: 1px solid gray;
+    padding: 4px 10px;
+  }
+
+  tr.active {
+    color: cyan;
+  }
+
+  td:first-child {
+    text-align: right;
+  }
+  td:last-child {
+    text-align: center;
+    min-width: 100px;
+  }
+}
+
+.title {
+  font-size: 30px;
+  color: white;
+  margin-right: 20px;
+}
+.statusText {
+  font-size: 30px;
+  color: #242020;
+  background-color: cyan;
+  border-radius: 10px;
+  padding: 0 10px;
+  min-width: 50px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.ml-20 {
+  margin-left: 20px;
+}
+
+.pl-10 {
+  padding-left: 10px;
+}
+
+.label {
+  font-size: 25px;
+  color: lightgray;
+  margin-right: 10px;
+}
+
+.value {
+  font-size: 25px;
+  color: cyan;
+}
+
+.subvalue {
+  font-size: 15px;
+  color: gray;
+  align-self: flex-end;
+}
+
+$tr_radius: 10px;
+$btn_radius: 5px;
+
+.prediction-table {
+  font-size: 20px;
+  color: lightgray;
+  th, td {
+    padding: 10px 20px;
+  }
+  th {
+    font-weight: normal;
+    height: 1px;
+  }
+  tr {
+    background-color: #161824;
+    border-color: transparent;
+    box-shadow: 4px 4px 8px 0 #000, -4px -4px 8px 0 hsla(0, 0%, 100%, .1);
+    border-radius: $tr_radius;
+    -moz-border-radius: $tr_radius;
+    -webkit-border-radius: $tr_radius;
+  }
+  tr.spacer {
+    background-color: transparent;
+    height: 10px;
+    box-shadow: none;
+  }
+
+  td:first-child{
+    border-radius: $tr_radius 0 0 $tr_radius;
+    -moz-border-radius:$tr_radius 0 0 $tr_radius;
+    -webkit-border-radius:$tr_radius 0 0 $tr_radius;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .option-icon {
+      margin-right: 10px;
+    }
+  }
+  td:last-child{
+    border-radius: 0 $tr_radius $tr_radius 0;
+    -moz-border-radius:0 $tr_radius $tr_radius 0;
+    -webkit-border-radius:0 $tr_radius $tr_radius 0;
+  }
+
+  .here-button {
+    background-color: #104e10;
+    border-width: 0;
+  }
+
+  .stake-button {
+    margin-left: 20px;
+    background-color: #104e10;
+    border-width: 0;
+    border-radius: $btn_radius 0 0 $btn_radius;
+  }
+  
+  .cancel-button {
+    background-color: #2f2f2f;
+    border-width: 0;
+    border-radius: 0 $btn_radius $btn_radius 0;
+  }
+
+  .max-button {
+    background-color: #2f2f2f;
+    border-width: 0;
+    border-radius: 0 $btn_radius $btn_radius 0 !important;
+    color: lightgray;
+  }
+
+  .stake-input {
+    width: 130px;
+    font-size: 15px;
+    background-color: #292c3b;
+    color: white;
+    border-width: 0;
+  }
+}

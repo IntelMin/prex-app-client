@@ -1,7 +1,8 @@
 
 import Web3 from 'web3';
-import address from './address';
-import dai_kovan_abi from './abis/dai-kovan.json';
+import Dai from './contracts/Dai';
+import MarketRegistry from './contracts/MarketRegistry';
+import Market from './contracts/Market';
 
 const getWeb3 = () => {
   let web3 = null;
@@ -33,17 +34,10 @@ const getEthBalance = async () => {
 }
 
 const getDaiBalance = async () => {
-  return new Promise((resolve, reject) => {
-    const web3 = getWeb3();
-    if (!web3) return 0;
-    const DaiContractInstance = new web3.eth.Contract(dai_kovan_abi, address.dai.kovan);
-    DaiContractInstance.methods.balanceOf(web3.currentProvider.selectedAddress).call()
-      .then(res => {
-        let balance = web3.utils.fromWei(res, 'ether');
-        resolve(balance);
-      })
-  });
+  const dai = new Dai();
+  return dai.getBalance();
 }
+
 
 const getAccount = () => {
   const web3 = getWeb3();
@@ -51,11 +45,28 @@ const getAccount = () => {
   return web3.currentProvider.selectedAddress;
 }
 
+const getAccountInfo = async () => {
+  const eth_balance = await getEthBalance();
+  const dai_balance = await getDaiBalance();
+  return {eth_balance, dai_balance};
+}
+
+const getCurrentMarketData = async () => {
+  const market_registry = new MarketRegistry();
+  var current_market_addr = await market_registry.getCurrentMarket();
+  const market = new Market(current_market_addr);
+  const marketData = await market.getMarketData();
+  const predictionData = await market.getPredictionData();
+  return {marketData, predictionData};
+}
+
 const utils = {
   getWeb3,
   getAccount,
   getEthBalance,
-  getDaiBalance
+  getDaiBalance,
+  getAccountInfo,
+  getCurrentMarketData
 };
 
 export default utils;
