@@ -19,6 +19,15 @@ class Dai extends Contract {
         })
     });
   }
+
+  approve(spender, amount) {
+    return new Promise((resolve, reject) => {
+      const DaiContractInstance = new this.web3.eth.Contract(dai_abi, address.dai.kovan);
+      DaiContractInstance.methods.approve(spender, amount).send({from: this.web3.currentProvider.selectedAddress})
+        .then(resolve)
+        .catch(console.log)
+    });
+  }
 }
 
 export default Dai;

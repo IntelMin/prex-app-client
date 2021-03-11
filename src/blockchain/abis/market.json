@@ -48,6 +48,14 @@
       {
         "name": "totalReward",
         "type": "uint256"
+      },
+      {
+        "name": "startPrice",
+        "type": "uint256"
+      },
+      {
+        "name": "endPrice",
+        "type": "uint256"
       }
     ],
     "payable": false,
@@ -138,6 +146,30 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "name": "startPrice",
+        "type": "uint256"
+      }
+    ],
+    "name": "MarketStarted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "endPrice",
+        "type": "uint256"
+      }
+    ],
+    "name": "MarketEnded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "name": "previousOwner",
         "type": "address"
@@ -210,8 +242,13 @@
   },
   {
     "constant": true,
-    "inputs": [],
-    "name": "getEndingPrice",
+    "inputs": [
+      {
+        "name": "_time",
+        "type": "uint256"
+      }
+    ],
+    "name": "getPrice",
     "outputs": [
       {
         "name": "",
@@ -280,6 +317,34 @@
     ],
     "payable": false,
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getCurrentTime",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "startMarket",
+    "outputs": [
+      {
+        "name": "startPrice",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   }
 ]

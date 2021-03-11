@@ -2,30 +2,44 @@ import React, {useState, useEffect} from 'react';
 import bullish_icon from  "../../assets/images/bullish.png";
 import neutral_icon from  "../../assets/images/neutral.png";
 import bearish_icon from  "../../assets/images/bearish.png";
+import winner from  "../../assets/images/winner.png";
 import { Image, Container, Row, Button } from 'react-bootstrap';
 import StakeForm from './StakeForm';
-import utils from '../../helpers/utils';
+import * as utils from '../../helpers/utils';
+import { connect } from 'react-redux';
+import { setStatus } from '../../redux/actions';
 
 const PredictionDataDisplay = (props) => {
 
-  const {data, maxAsset, marketData} = props;
-  const totalUsers = Number(data[0]);
-  const totalStaked = data[1];
+  const { data, maxAsset, status } = props;
+  const { marketData, predictionData, resultData } = data;
+  const totalUsers = Number(predictionData.totalParticipants);
+  const totalStaked = [...predictionData.totalStaked];
+  const userStaked = [...predictionData.userStaked];
+  for (let i = 0; i < totalStaked.length; i++) {
+    totalStaked[i] = utils.num(totalStaked[i]);
+    userStaked[i] = utils.num(userStaked[i]);
+  }
   var totalStakedSum = 0;
-  for (let i = 0; i < totalStaked.length; i++)
-    totalStakedSum += Number(totalStaked[i]);
-  const userStaked = data[2];
   var userStakedSum = 0;
-  for (let i = 0; i < userStaked.length; i++)
+  for (let i = 0; i < totalStaked.length; i++) {
+    totalStakedSum += Number(totalStaked[i]);
     userStakedSum += Number(userStaked[i]);
+  }
+
+  const minVaue = utils.fromEthPrice(marketData.neutralMinValue);
+  const maxValue = utils.fromEthPrice(marketData.neutralMaxValue);
+
+  const startPrice = utils.fromEthPrice(resultData.startPrice);
+  const endPrice = utils.fromEthPrice(resultData.endPrice);
 
   const options = [
-    {title: "Bullish", icon: bullish_icon, description: ">$" + marketData.neutralMaxValue},
-    {title: "Neutral", icon: neutral_icon, description: "$" + marketData.neutralMinValue + " to $" + marketData.neutralMaxValue},
-    {title: "Bearish", icon: bearish_icon, description: "<$" + marketData.neutralMinValue}
+    {title: "Bullish", icon: bullish_icon, description: ">$" + maxValue},
+    {title: "Neutral", icon: neutral_icon, description: "$" + minVaue + " to $" + maxValue},
+    {title: "Bearish", icon: bearish_icon, description: "<$" + minVaue}
   ];
   return (
-    <Container className="no-padding no-max-width">
+    <Container className="no-padding">
       <Row className="mt-10">
         <span className="title">Prediction</span>
       </Row>
@@ -33,7 +47,11 @@ const PredictionDataDisplay = (props) => {
         <span className="label">Participants:</span><span className="value">{totalUsers}</span>
         <span className="label ml-20">Total Staked:</span><span className="value">{utils.cut(totalStakedSum)} DAI</span>
         <span className="label ml-20">You Staked:</span><span className="value">{utils.cut(userStakedSum)} DAI</span>
-          <span className="subvalue">({(userStakedSum*100/totalStakedSum).toFixed(2)}% of total)</span>
+          <span className="subvalue">({totalStakedSum>0?(userStakedSum*100/totalStakedSum).toFixed(2):'0.00'}% of Total)</span>
+      </Row>
+      <Row className="mt-10">
+        <span className="label">Start Price:</span><span className="value">{startPrice>0?('$'+startPrice):"Waiting to Start"}</span>
+        <span className="label ml-20">End Price:</span><span className="value">{endPrice>0?('$'+endPrice):"Waiting Result"}</span>
       </Row>
       <Row className="mt-10">
         <table className="prediction-table">
@@ -51,18 +69,28 @@ const PredictionDataDisplay = (props) => {
                   <>
                   <tr className="spacer"></tr>
                   <tr>
-                    <td style={{maxWidth: 150}}>
+                    <td style={{maxWidth: 170}}>
                       <div className="option-title"><Image className="option-icon" src={option.icon} width={20} height={20} />{option.title}</div>
                       <div className="option-desc">{option.description}</div>
                     </td>
                     <td>{utils.cut(totalStaked[index])} DAI</td>
                     <td>
                       {utils.cut(userStaked[index])} DAI
-                      <span className="subvalue">({(userStaked[index]*100/totalStaked[index]).toFixed(2)}%)</span>
+                      <span className="subvalue">({totalStaked[index]>0?(userStaked[index]*100/totalStaked[index]).toFixed(2):"0.00"}%)</span>
                     </td>
-                    <td>
-                      <StakeForm max={maxAsset}/>
-                    </td>
+                    {status==2 &&
+                      <td>
+                        <StakeForm max={maxAsset} option={index}/>
+                      </td>
+                    }
+                    {endPrice>0 &&
+                      <td>
+                        {
+                          index==resultData.winningOption && 
+                          <Image src={winner} width={20} height={20} />
+                        }
+                      </td>
+                    }
                   </tr>
                   <tr className="spacer"></tr>
                   </>
@@ -76,4 +104,10 @@ const PredictionDataDisplay = (props) => {
   )
 }
 
-export default PredictionDataDisplay;
+const mapStateToProps = (state) => {
+  const { status } = state.Blockchain;
+
+  return { status };
+};
+
+export default connect(mapStateToProps, { setStatus })(PredictionDataDisplay);

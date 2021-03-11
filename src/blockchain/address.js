@@ -7,7 +7,7 @@ const address = {
     kovan: "0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa"
   },
   market_registry: {
-    kovan: "0xa3B6664ECdb5129aa5B5Adbdd6D0bbC23bd7e03b"
+    kovan: "0x52C1287B865d5Ead5aaE5303615A1c1AC7FBd342"
   }
 };
 

@@ -4,14 +4,13 @@ import { Container, Row } from 'react-bootstrap';
 import functions from "../blockchain/functions";
 import MarketDataDisplay from "../components/home/MarketDataDisplay";
 import PredictionDataDisplay from "../components/home/PredictionDataDisplay";
-import utils from '../helpers/utils';
+import * as utils from '../helpers/utils';
 
 const Home = (props) => {
   
   const {wallet} = props;
   const [accountInfo, setAccountInfo] = useState({eth_balance: 0, dai_balance: 0});
   const [marketData, setMarketData] = useState(null);
-  const [predictionData, setPredictionData] = useState(null);
 
   useEffect(() => {
     if (wallet) {
@@ -22,10 +21,12 @@ const Home = (props) => {
       functions.getCurrentMarketData()
         .then(res => {
           console.log(res);
-          setMarketData(res.marketData);
-          setPredictionData(res.predictionData);
+          setMarketData(res);
         })
         .catch(console.log);
+      functions.onPredictionUpdated(res => {
+        //setPredictionData(res);
+      })
     }    
   }, [wallet])
 
@@ -49,15 +50,15 @@ const Home = (props) => {
         </div>
       </Row>
       {
-        marketData && 
+        marketData &&
           <Row>
             <MarketDataDisplay data={marketData}/>
           </Row>
       }
       {
-        predictionData && 
+        marketData && 
           <Row>
-            <PredictionDataDisplay data={predictionData} maxAsset={Number(accountInfo.dai_balance)} marketData={marketData} />
+            <PredictionDataDisplay data={marketData} maxAsset={Number(accountInfo.dai_balance)} />
           </Row>
       }
       

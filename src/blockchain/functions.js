@@ -4,6 +4,11 @@ import Dai from './contracts/Dai';
 import MarketRegistry from './contracts/MarketRegistry';
 import Market from './contracts/Market';
 
+var eventset = false;
+var market = null;
+var current_market_addr = null;
+var infura_web3 = null;
+
 const getWeb3 = () => {
   let web3 = null;
   if (window.ethereum) {
@@ -19,6 +24,11 @@ const getWeb3 = () => {
     return null;
   }
   return web3;
+}
+
+const getInfuraWeb3 = () => {
+  const infura_web3 = new Web3("wss://kovan.infura.io/ws/v3/2377373e9cc84228a6cea33645b511ea");
+  return infura_web3;  
 }
 
 const getEthBalance = async () => {
@@ -53,11 +63,26 @@ const getAccountInfo = async () => {
 
 const getCurrentMarketData = async () => {
   const market_registry = new MarketRegistry();
-  var current_market_addr = await market_registry.getCurrentMarket();
-  const market = new Market(current_market_addr);
+  current_market_addr = await market_registry.getCurrentMarket();
+  market = new Market(current_market_addr);
   const marketData = await market.getMarketData();
   const predictionData = await market.getPredictionData();
-  return {marketData, predictionData};
+  const resultData = await market.getResultData();
+  //const currentTime = await market.getCurrentTime();
+  return {marketData, predictionData, resultData};
+}
+
+const onPredictionUpdated = (callback) => {
+  if (eventset || !market) return;
+  eventset = true;
+  market.onPredictionUpdated(callback);
+}
+
+const placePrediction = async (stakeAmount, option) => {
+  if (!market) return;
+  const dai = new Dai();
+  await dai.approve(current_market_addr, stakeAmount);
+  await market.placePrediction(stakeAmount, option);
 }
 
 const functions = {
@@ -66,7 +91,9 @@ const functions = {
   getEthBalance,
   getDaiBalance,
   getAccountInfo,
-  getCurrentMarketData
+  getCurrentMarketData,
+  onPredictionUpdated,
+  placePrediction,
 };
 
 export default functions;

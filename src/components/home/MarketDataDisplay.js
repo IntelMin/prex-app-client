@@ -2,16 +2,19 @@ import React, {useState, useEffect} from 'react';
 import Countdown from "react-countdown";
 import check_icon from  "../../assets/images/check.png";
 import { Image, Container, Row } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { setStatus } from '../../redux/actions';
+import * as utils from '../../helpers/utils';
 
 var interval = null;
 
 const MarketDataDisplay = (props) => {
 
-  const {data} = props;
-  const [status, setStatus] = useState(0);
-  const startTime = Number(data.startTime)+60000*3;
-  const predictionTime = Number(data.predictionTime)+60000*3;
-  const endTime = Number(data.endTime)+60000*3;
+  const {data, status} = props;
+  const {marketData} = data;
+  const startTime = Number(marketData.startTime)*1000;
+  const predictionTime = Number(marketData.predictionTime)*1000;
+  const endTime = Number(marketData.endTime)*1000;
   useEffect(() => {
     interval = setInterval(() => {
       var sta = 0;
@@ -24,7 +27,7 @@ const MarketDataDisplay = (props) => {
         sta = 3;
       else
         sta = 4;
-      setStatus(sta);
+      props.setStatus(sta);
     }, 1000);
     for (var i = 1; i < interval; i++)
       window.clearInterval(i);
@@ -80,4 +83,10 @@ const MarketDataDisplay = (props) => {
   )
 }
 
-export default MarketDataDisplay;
+const mapStateToProps = (state) => {
+  const { status } = state.Blockchain;
+
+  return { status };
+};
+
+export default connect(mapStateToProps, { setStatus })(MarketDataDisplay);
