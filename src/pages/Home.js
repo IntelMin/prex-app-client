@@ -90,13 +90,18 @@ const Home = (props) => {
 
   console.log(marketData);
 
-  const updateStaked = (option, amount) => {
+  const updateStaked = (option, amount_user, amount_total) => {
     let newData = {...mData};
-    let arr = [];
-    for (var i = 0; i < newData.predictionData.userStaked.length; i++)
-      arr.push(newData.predictionData.userStaked[i]);
-    arr[option] = amount;
-    newData.predictionData.userStaked = arr;
+    let arr_user = [], arr_total = [];
+    let i;
+    for (i = 0; i < newData.predictionData.userStaked.length; i++)
+      arr_user.push(newData.predictionData.userStaked[i]);
+    arr_user[option] = amount_user;
+    for (i = 0; i < newData.predictionData.totalStaked.length; i++)
+      arr_total.push(newData.predictionData.totalStaked[i]);
+    arr_total[option] = amount_total;
+    newData.predictionData.userStaked = arr_user;
+    newData.predictionData.totalStaked = arr_total;
     setMarketData(newData);
     mData = newData;
   }

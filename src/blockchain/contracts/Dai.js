@@ -2,7 +2,6 @@
 import Contract from './Contract';
 import dai_abi from '../abis/dai.json';
 import address from '../address';
-import BigNumber from 'bignumber.js';
 
 class Dai extends Contract {
   constructor() {

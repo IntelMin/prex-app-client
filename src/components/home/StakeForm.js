@@ -1,8 +1,9 @@
 import BigNumber from 'bignumber.js';
-import React, {useState, useEffect} from 'react';
-import { Button, InputGroup, FormControl } from 'react-bootstrap';
+import React, {useState} from 'react';
+import { Button, InputGroup, FormControl, Image } from 'react-bootstrap';
 import functions from '../../blockchain/functions';
 import * as utils from '../../helpers/utils';
+import spiner from '../../assets/images/spinner.gif';
 
 const StakeForm = (props) => {
 
@@ -26,18 +27,20 @@ const StakeForm = (props) => {
       return;
     }
     const amountUint = utils.uint(Number(amount));
-    const original = BigNumber(predictionData.userStaked[option]);
-    props.setBusy(true);
+    const original_user = BigNumber(predictionData.userStaked[option]);
+    const original_total = BigNumber(predictionData.totalStaked[option]);
+    props.setBusy(option);
     functions.placePrediction(amountUint, option)
       .then(res => {
-        props.setBusy(false);
+        props.setBusy(-1);
         let realAmount = amountUint.multipliedBy(BigNumber(0.999));
-        let newValue = original.plus(realAmount);
-        props.updateStaked(option, newValue.toString());
+        let newValue_user = original_user.plus(realAmount);
+        let newValue_total = original_total.plus(realAmount);
+        props.updateStaked(option, newValue_user.toString(), newValue_total.toString());
       })
       .catch(err => {
-        props.setBusy(false);
-        alert('Error occured while staking. Maybe prediction time is expired or you have not enough asset.');
+        props.setBusy(-1);
+        alert('Error occured while staking. Maybe, prediction time is expired or you have not enough asset.');
         console.log("error", err);
       })
   }
@@ -52,8 +55,11 @@ const StakeForm = (props) => {
 
   return (
     opened?
-      props.busy?
-      <span>Staking...</span>
+      props.busy>=0?
+      <div>
+        <Image src={spiner} width={25} height={25} style={{marginRight: 10}}/>
+        Staking...
+      </div>
       :
       <InputGroup>
         <FormControl

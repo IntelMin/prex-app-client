@@ -1,13 +1,10 @@
 
 import Web3 from 'web3';
 import Dai from './contracts/Dai';
-import MarketRegistry from './contracts/MarketRegistry';
 import Market from './contracts/Market';
 import address from './address';
 
 var market = null;
-var current_market_addr = null;
-var infura_web3 = null;
 
 const getWeb3 = () => {
   let web3 = null;
@@ -68,8 +65,10 @@ const getCurrentMarketData = async () => {
   const marketData = await market.getMarketData();
   const predictionData = await market.getPredictionData();
   const resultData = await market.getResultData();
-  //const currentTime = await market.getCurrentTime();
-  return {marketData, predictionData, resultData};
+  const time = await market.getCurrentTime();
+  const timeOffset = Math.floor(Date.now()/1000) - Number(time);
+  console.log("Time offset is " + timeOffset + "s.");
+  return {marketData, predictionData, resultData, timeOffset};
 }
 
 const placePrediction = async (stakeAmount, option) => {

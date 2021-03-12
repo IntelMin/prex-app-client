@@ -2,7 +2,6 @@
 import Contract from './Contract';
 import market_abi from '../abis/market.json';
 import address from '../address';
-import functions from '../functions';
 
 class Market extends Contract {
   constructor() {

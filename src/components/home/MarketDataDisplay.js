@@ -1,20 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import Countdown from "react-countdown";
 import check_icon from  "../../assets/images/check.png";
 import { Image, Container, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { setStatus } from '../../redux/actions';
-import * as utils from '../../helpers/utils';
 
 var interval = null;
 
 const MarketDataDisplay = (props) => {
 
   const {data, status} = props;
-  const {marketData} = data;
-  const startTime = Number(marketData.startTime)*1000;
-  const predictionTime = Number(marketData.predictionTime)*1000;
-  const endTime = Number(marketData.endTime)*1000;
+  const {marketData, timeOffset} = data;
+  const startTime = Number(marketData.startTime)*1000 + timeOffset;
+  const predictionTime = Number(marketData.predictionTime)*1000 + timeOffset;
+  const endTime = Number(marketData.endTime)*1000 + timeOffset;
   useEffect(() => {
     if (props.wallet) {
       if (interval)
@@ -50,6 +49,7 @@ const MarketDataDisplay = (props) => {
     case 2: statusText = "Live"; break;
     case 3: statusText = "Waiting-Result"; break;
     case 4: statusText = "Ended"; break;
+    default: break;
   }
   return (
     <Container className="no-padding">

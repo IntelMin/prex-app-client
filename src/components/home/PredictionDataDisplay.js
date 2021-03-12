@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import bullish_icon from  "../../assets/images/bullish.png";
 import neutral_icon from  "../../assets/images/neutral.png";
 import bearish_icon from  "../../assets/images/bearish.png";
 import winner from  "../../assets/images/winner.png";
-import { Image, Container, Row, Button } from 'react-bootstrap';
+import { Image, Container, Row } from 'react-bootstrap';
 import StakeForm from './StakeForm';
 import * as utils from '../../helpers/utils';
 import { connect } from 'react-redux';
@@ -12,7 +12,7 @@ import { setStatus } from '../../redux/actions';
 const PredictionDataDisplay = (props) => {
 
   const { data, maxAsset, status } = props;
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState(-1);
   const { marketData, predictionData, resultData } = data;
   const totalUsers = Number(predictionData.totalParticipants);
   const totalStaked = [...predictionData.totalStaked];
@@ -87,9 +87,13 @@ const PredictionDataDisplay = (props) => {
                     </td>
                     {status==2 &&
                       <td>
-                        <StakeForm max={maxAsset} option={index} updateStaked={props.updateStaked} predictionData={predictionData} busy={busy} setBusy={setBusy}/>
+                        {
+                          (userStakedSum != 0 && userStaked[index] == 0) || (busy>=0 && busy !== index)?
+                            <span></span>
+                          :
+                            <StakeForm max={maxAsset} option={index} updateStaked={props.updateStaked} predictionData={predictionData} busy={busy} setBusy={setBusy}/>
+                        }
                       </td>
-                        
                     }
                     {endPrice>0 &&
                       <td>
