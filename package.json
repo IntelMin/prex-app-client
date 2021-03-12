@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "auther": "",
+  "engines": {
+    "node": "14.x",
+    "yarn": "1.x"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -29,7 +33,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "heroku-postbuild":"NPM_CONFIG_PRODUCTION=false yarn install && yarn build"
+    "heroku-postbuild":"NPM_CONFIG_PRODUCTION=false YARN_PRODUCTION=false yarn install && yarn build"
   },
   "eslintConfig": {
     "extends": [
