@@ -11,9 +11,9 @@ const MarketDataDisplay = (props) => {
 
   const {data, status} = props;
   const {marketData, timeOffset} = data;
-  const startTime = Number(marketData.startTime)*1000 + timeOffset;
-  const predictionTime = Number(marketData.predictionTime)*1000 + timeOffset;
-  const endTime = Number(marketData.endTime)*1000 + timeOffset;
+  const startTime = (Number(marketData.startTime) + timeOffset)*1000;
+  const predictionTime = (Number(marketData.predictionTime) + timeOffset)*1000;
+  const endTime = (Number(marketData.endTime) + timeOffset)*1000;
   useEffect(() => {
     if (props.wallet) {
       if (interval)
