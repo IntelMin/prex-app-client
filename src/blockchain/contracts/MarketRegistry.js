@@ -13,7 +13,7 @@ class MarketRegistry extends Contract {
     return new Promise((resolve, reject) => {
       this.contract.methods.getCurrentMarket().call()
         .then(resolve)
-        .catch(console.log);
+        .catch(reject)
     });
   }
 }

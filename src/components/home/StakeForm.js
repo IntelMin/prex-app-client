@@ -21,7 +21,7 @@ const StakeForm = (props) => {
   }
 
   const onStakeClick = () => {
-    if (isNaN(amount) || isNaN(parseFloat(amount))) {
+    if (isNaN(amount) || isNaN(parseFloat(amount)) || Number(amount) <= 0 || Number(amount) > realMax) {
       alert("Input a valid number.");
       return;
     }

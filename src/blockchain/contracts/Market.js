@@ -15,7 +15,7 @@ class Market extends Contract {
     return new Promise((resolve, reject) => {
       this.contract.methods.marketData().call()
         .then(resolve)
-        .catch(console.log);
+        .catch(reject)
     });
   }
   
@@ -23,7 +23,7 @@ class Market extends Contract {
     return new Promise((resolve, reject) => {
       this.contract.methods.getPredictionData().call({from: this.web3.currentProvider.selectedAddress})
         .then(resolve)
-        .catch(console.log);
+        .catch(reject)
     });
   }
 
@@ -31,15 +31,15 @@ class Market extends Contract {
     return new Promise((resolve, reject) => {
       this.contract.methods.marketResult().call()
         .then(resolve)
-        .catch(console.log);
+        .catch(reject)
     });
   }
 
   placePrediction(stakeAmount, option) {
     return new Promise((resolve, reject) => {
-      this.contract.methods.placePrediction(stakeAmount, option).send({from: this.web3.currentProvider.selectedAddress})
+      this.contract.methods.placePrediction(stakeAmount.toString(), option).send({from: this.web3.currentProvider.selectedAddress})
         .then(resolve)
-        .catch(console.log);
+        .catch(reject)
     });
   }
 
@@ -87,7 +87,7 @@ class Market extends Contract {
     return new Promise((resolve, reject) => {
       this.contract.methods.getCurrentTime().call()
         .then(resolve)
-        .catch(console.log);
+        .catch(reject)
     });
   }
 }

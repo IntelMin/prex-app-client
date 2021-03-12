@@ -11,10 +11,10 @@ class PriceFeed extends Contract {
 
   getLastPrice() {
     this.contract.methods.latestRoundData().call()
-    .then((roundData) => {
-      // Do something with roundData
-      console.log("Latest Round Data", roundData)
-    });
+      .then((roundData) => {
+        resolve(roundData);
+      })
+      .catch(reject)
   }
 }
 

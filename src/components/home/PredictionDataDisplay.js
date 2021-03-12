@@ -96,8 +96,8 @@ const PredictionDataDisplay = (props) => {
                         {
                           index==resultData.winningOption && 
                           <>
-                            <Image src={winner} width={20} height={20} />
-                             You rewarded {calculateReward(index)} DAI
+                            <Image src={winner} width={20} height={20} style={{marginRight: 10}} />
+                            You rewarded {calculateReward(index)} DAI
                           </>
                         }
                       </td>
