@@ -3,8 +3,8 @@ import Web3 from 'web3';
 import Dai from './contracts/Dai';
 import MarketRegistry from './contracts/MarketRegistry';
 import Market from './contracts/Market';
+import address from './address';
 
-var eventset = false;
 var market = null;
 var current_market_addr = null;
 var infura_web3 = null;
@@ -48,6 +48,9 @@ const getDaiBalance = async () => {
   return dai.getBalance();
 }
 
+const setMarket = () => {
+  market = new Market();
+}
 
 const getAccount = () => {
   const web3 = getWeb3();
@@ -62,9 +65,6 @@ const getAccountInfo = async () => {
 }
 
 const getCurrentMarketData = async () => {
-  const market_registry = new MarketRegistry();
-  current_market_addr = await market_registry.getCurrentMarket();
-  market = new Market(current_market_addr);
   const marketData = await market.getMarketData();
   const predictionData = await market.getPredictionData();
   const resultData = await market.getResultData();
@@ -72,28 +72,55 @@ const getCurrentMarketData = async () => {
   return {marketData, predictionData, resultData};
 }
 
-const onPredictionUpdated = (callback) => {
-  if (eventset || !market) return;
-  eventset = true;
-  market.onPredictionUpdated(callback);
-}
-
 const placePrediction = async (stakeAmount, option) => {
   if (!market) return;
   const dai = new Dai();
-  await dai.approve(current_market_addr, stakeAmount);
+  await dai.approve(address.market.kovan, stakeAmount);
   await market.placePrediction(stakeAmount, option);
+}
+
+var createSet = false;
+const onMarketCreated = (callback) => {
+  if (createSet || !market) return;
+  createSet = true;
+  market.onMarketCreated(callback);
+}
+
+var startSet = false;
+const onMarketStarted = (callback) => {
+  if (startSet || !market) return;
+  startSet = true;
+  market.onMarketStarted(callback);
+}
+
+var predictionSet = false;
+const onPredictionUpdated = (callback) => {
+  if (predictionSet || !market) return;
+  predictionSet = true;
+  market.onPredictionUpdated(callback);
+}
+
+var endSet = false;
+const onMarketEnded = (callback) => {
+  if (endSet || !market) return;
+  endSet = true;
+  market.onMarketEnded(callback);
 }
 
 const functions = {
   getWeb3,
+  getInfuraWeb3,
   getAccount,
   getEthBalance,
   getDaiBalance,
   getAccountInfo,
   getCurrentMarketData,
-  onPredictionUpdated,
   placePrediction,
+  onMarketCreated,
+  onMarketStarted,
+  onPredictionUpdated,
+  onMarketEnded,
+  setMarket
 };
 
 export default functions;

@@ -16,22 +16,24 @@ const MarketDataDisplay = (props) => {
   const predictionTime = Number(marketData.predictionTime)*1000;
   const endTime = Number(marketData.endTime)*1000;
   useEffect(() => {
-    interval = setInterval(() => {
-      var sta = 0;
-      const utcNow = Date.now();
-      if (utcNow < startTime)
-        sta = 1;
-      else if (utcNow < predictionTime)
-        sta = 2;
-      else if (utcNow < endTime)
-        sta = 3;
-      else
-        sta = 4;
-      props.setStatus(sta);
-    }, 1000);
-    for (var i = 1; i < interval; i++)
-      window.clearInterval(i);
-  }, [])
+    if (props.wallet) {
+      if (interval)
+        window.clearInterval(interval);
+      interval = setInterval(() => {
+        var sta = 0;
+        const utcNow = Date.now();
+        if (utcNow < startTime)
+          sta = 1;
+        else if (utcNow < predictionTime)
+          sta = 2;
+        else if (utcNow < endTime)
+          sta = 3;
+        else
+          sta = 4;
+        props.setStatus(sta);
+      }, 1000);
+    }
+  }, [startTime, props.wallet])
   
   const getDateStr = (timestamp) => {
     const date = new Date(timestamp);
@@ -84,9 +86,9 @@ const MarketDataDisplay = (props) => {
 }
 
 const mapStateToProps = (state) => {
-  const { status } = state.Blockchain;
+  const { status, wallet } = state.Blockchain;
 
-  return { status };
+  return { status, wallet };
 };
 
 export default connect(mapStateToProps, { setStatus })(MarketDataDisplay);

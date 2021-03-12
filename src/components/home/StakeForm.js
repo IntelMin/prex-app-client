@@ -1,11 +1,12 @@
+import BigNumber from 'bignumber.js';
 import React, {useState, useEffect} from 'react';
 import { Button, InputGroup, FormControl } from 'react-bootstrap';
 import functions from '../../blockchain/functions';
 import * as utils from '../../helpers/utils';
 
-const MarketDataDisplay = (props) => {
+const StakeForm = (props) => {
 
-  const {max, option} = props;
+  const {max, option, predictionData} = props;
   const [opened, setOpened] = useState(false);
   const [amount, setAmount] = useState("0");
 
@@ -25,11 +26,18 @@ const MarketDataDisplay = (props) => {
       return;
     }
     const amountUint = utils.uint(Number(amount));
+    const original = BigNumber(predictionData.userStaked[option]);
+    props.setBusy(true);
     functions.placePrediction(amountUint, option)
       .then(res => {
-        console.log("done", res);
+        props.setBusy(false);
+        let realAmount = amountUint.multipliedBy(BigNumber(0.999));
+        let newValue = original.plus(realAmount);
+        props.updateStaked(option, newValue.toString());
       })
       .catch(err => {
+        props.setBusy(false);
+        alert('Error occured while staking. Maybe prediction time is expired or you have not enough asset.');
         console.log("error", err);
       })
   }
@@ -44,6 +52,9 @@ const MarketDataDisplay = (props) => {
 
   return (
     opened?
+      props.busy?
+      <span>Staking...</span>
+      :
       <InputGroup>
         <FormControl
           placeholder="Stake Amount"
@@ -62,4 +73,4 @@ const MarketDataDisplay = (props) => {
   )
 }
 
-export default MarketDataDisplay;
+export default StakeForm;

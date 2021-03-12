@@ -12,6 +12,7 @@ import { setStatus } from '../../redux/actions';
 const PredictionDataDisplay = (props) => {
 
   const { data, maxAsset, status } = props;
+  const [busy, setBusy] = useState(false);
   const { marketData, predictionData, resultData } = data;
   const totalUsers = Number(predictionData.totalParticipants);
   const totalStaked = [...predictionData.totalStaked];
@@ -38,6 +39,12 @@ const PredictionDataDisplay = (props) => {
     {title: "Neutral", icon: neutral_icon, description: "$" + minVaue + " to $" + maxValue},
     {title: "Bearish", icon: bearish_icon, description: "<$" + minVaue}
   ];
+  const calculateReward = (option) => {
+    if (totalStaked[option] == 0 || totalStakedSum == 0 || userStaked[option] == 0)
+      return 0;
+    
+    return (totalStakedSum*userStaked[option]/totalStaked[option]).toFixed(4);
+  }
   return (
     <Container className="no-padding">
       <Row className="mt-10">
@@ -80,14 +87,18 @@ const PredictionDataDisplay = (props) => {
                     </td>
                     {status==2 &&
                       <td>
-                        <StakeForm max={maxAsset} option={index}/>
+                        <StakeForm max={maxAsset} option={index} updateStaked={props.updateStaked} predictionData={predictionData} busy={busy} setBusy={setBusy}/>
                       </td>
+                        
                     }
                     {endPrice>0 &&
                       <td>
                         {
                           index==resultData.winningOption && 
-                          <Image src={winner} width={20} height={20} />
+                          <>
+                            <Image src={winner} width={20} height={20} />
+                             You rewarded {calculateReward(index)} DAI
+                          </>
                         }
                       </td>
                     }

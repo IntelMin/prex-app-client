@@ -5,10 +5,10 @@ import address from '../address';
 import functions from '../functions';
 
 class Market extends Contract {
-  constructor(addr) {
+  constructor() {
     super();
-    this.contract = new this.web3.eth.Contract(market_abi, addr);
-    this.infuraContract = new this.infuraWeb3.eth.Contract(market_abi, addr);
+    this.contract = new this.web3.eth.Contract(market_abi, address.market.kovan);
+    this.infuraContract = new this.infuraWeb3.eth.Contract(market_abi, address.market.kovan);
   }
 
   getMarketData() {
@@ -43,8 +43,8 @@ class Market extends Contract {
     });
   }
 
-  onPredictionUpdated(callback) {
-    this.infuraContract.events.PredictionDataUpdated((err, res) => {
+  onMarketCreated(callback) {
+    this.infuraContract.events.MarketCreated((err, res) => {
       if (err === null) {
         callback(res.returnValues);
       } else {
@@ -55,6 +55,16 @@ class Market extends Contract {
 
   onMarketStarted(callback) {
     this.infuraContract.events.MarketStarted((err, res) => {
+      if (err === null) {
+        callback(res.returnValues);
+      } else {
+        console.error(err);
+      }
+    });
+  }
+
+  onPredictionUpdated(callback) {
+    this.infuraContract.events.PredictionDataUpdated((err, res) => {
       if (err === null) {
         callback(res.returnValues);
       } else {

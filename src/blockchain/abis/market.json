@@ -86,6 +86,10 @@
       {
         "name": "neutralMaxValue",
         "type": "uint256"
+      },
+      {
+        "name": "neutralRange",
+        "type": "uint256"
       }
     ],
     "payable": false,
@@ -125,21 +129,21 @@
     "inputs": [
       {
         "indexed": false,
-        "name": "totalParticipants",
+        "name": "startTime",
         "type": "uint256"
       },
       {
         "indexed": false,
-        "name": "totalStaked",
-        "type": "uint256[]"
+        "name": "predictionTime",
+        "type": "uint256"
       },
       {
         "indexed": false,
-        "name": "userStaked",
-        "type": "uint256[]"
+        "name": "endTime",
+        "type": "uint256"
       }
     ],
-    "name": "PredictionDataUpdated",
+    "name": "MarketCreated",
     "type": "event"
   },
   {
@@ -148,6 +152,16 @@
       {
         "indexed": false,
         "name": "startPrice",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "neutralMinValue",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "neutralMaxValue",
         "type": "uint256"
       }
     ],
@@ -159,7 +173,29 @@
     "inputs": [
       {
         "indexed": false,
+        "name": "totalParticipants",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "totalStaked",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "PredictionDataUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "name": "endPrice",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "winningOption",
         "type": "uint256"
       }
     ],
@@ -195,11 +231,7 @@
         "type": "uint256"
       },
       {
-        "name": "_minValue",
-        "type": "uint256"
-      },
-      {
-        "name": "_maxValue",
+        "name": "_neutralRange",
         "type": "uint256"
       },
       {
@@ -209,8 +241,8 @@
     ],
     "name": "initiate",
     "outputs": [],
-    "payable": true,
-    "stateMutability": "payable",
+    "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -341,10 +373,27 @@
       {
         "name": "startPrice",
         "type": "uint256"
+      },
+      {
+        "name": "neutralMinValue",
+        "type": "uint256"
+      },
+      {
+        "name": "neutralMaxValue",
+        "type": "uint256"
       }
     ],
     "payable": false,
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "clearMarket",
+    "outputs": [],
+    "payable": true,
+    "stateMutability": "payable",
     "type": "function"
   }
 ]

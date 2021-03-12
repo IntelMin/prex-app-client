@@ -63,7 +63,7 @@ const ConnectModal = (props) => {
           </ul>
         </div>
       )}
-      {!selectMetaMask && (
+      {!selectMetaMask && false && (
         <div className="connect-btn">
           <button type="button" onClick={() => wallet.connect('walletconnect')} className="smart-shadow bg-transparent">
             <div className="border-t border-b flex">
