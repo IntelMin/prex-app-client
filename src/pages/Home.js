@@ -50,7 +50,7 @@ const Home = (props) => {
         .catch(console.log);
       functions.onMarketCreated(res => {
         console.log("Created", res)
-        let newData = {...initialData};
+        let newData = {...initialData, timeOffset: mData.timeOffset};
         newData.marketData = {...newData.marketData, ...res};
         setMarketData(newData);
         mData = newData;

@@ -11,6 +11,7 @@ const MarketDataDisplay = (props) => {
 
   const {data, status} = props;
   const {marketData, timeOffset} = data;
+  console.log(data);
   const startTime = (Number(marketData.startTime) + timeOffset)*1000;
   const predictionTime = (Number(marketData.predictionTime) + timeOffset)*1000;
   const endTime = (Number(marketData.endTime) + timeOffset)*1000;
@@ -35,6 +36,7 @@ const MarketDataDisplay = (props) => {
   }, [startTime, props.wallet])
   
   const getDateStr = (timestamp) => {
+    console.log(timestamp);
     const date = new Date(timestamp);
     return date.toUTCString(); 
   }
