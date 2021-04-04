@@ -7,7 +7,7 @@ import spiner from '../../assets/images/spinner.gif';
 
 const StakeForm = (props) => {
 
-  const {max, option, predictionData} = props;
+  const {max, option, predData} = props;
   const [opened, setOpened] = useState(false);
   const [amount, setAmount] = useState("0");
 
@@ -27,10 +27,10 @@ const StakeForm = (props) => {
       return;
     }
     const amountUint = utils.uint(Number(amount));
-    const original_user = BigNumber(predictionData.userStaked[option]);
-    const original_total = BigNumber(predictionData.totalStaked[option]);
+    const original_user = BigNumber(predData._userStaked[option]);
+    const original_total = BigNumber(predData._totalStaked[option]);
     props.setBusy(option);
-    functions.placePrediction(amountUint, option)
+    props.placePrediction(amountUint, option)
       .then(res => {
         props.setBusy(-1);
         let realAmount = amountUint.multipliedBy(BigNumber(0.999));

@@ -4,6 +4,7 @@ import reportWebVitals from './reportWebVitals';
 import configureStore from './redux';
 import { Provider } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import App from './App';
 import { UseWalletProvider } from 'use-wallet';
 import { WEB3_PROVIDER_URL } from './config';

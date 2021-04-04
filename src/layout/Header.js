@@ -36,9 +36,6 @@ function Header(props) {
       </div>
       <nav>
         <NavLink exact activeClassName="active" to="/">
-          Home
-        </NavLink>
-        <NavLink exact activeClassName="active" to="/markets">
           Markets
         </NavLink>
         <NavLink exact activeClassName="active" to="/blogs">

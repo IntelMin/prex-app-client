@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import bullish_icon from  "../../assets/images/bullish.png";
-import neutral_icon from  "../../assets/images/neutral.png";
 import bearish_icon from  "../../assets/images/bearish.png";
 import winner from  "../../assets/images/winner.png";
 import { Image, Container, Row } from 'react-bootstrap';
@@ -9,14 +8,14 @@ import * as utils from '../../helpers/utils';
 import { connect } from 'react-redux';
 import { setStatus } from '../../redux/actions';
 
-const PredictionDataDisplay = (props) => {
+const PredDataDisplay = (props) => {
 
-  const { data, maxAsset, status } = props;
+  const { data, predData, maxAsset, status } = props;
   const [busy, setBusy] = useState(-1);
-  const { marketData, predictionData, resultData } = data;
-  const totalUsers = Number(predictionData.totalParticipants);
-  const totalStaked = [...predictionData.totalStaked];
-  const userStaked = [...predictionData.userStaked];
+
+  const totalUsers = Number(predData._totalUsers);
+  const totalStaked = [...predData._totalStaked];
+  const userStaked = [...predData._userStaked];
   for (let i = 0; i < totalStaked.length; i++) {
     totalStaked[i] = utils.num(totalStaked[i]);
     userStaked[i] = utils.num(userStaked[i]);
@@ -28,16 +27,12 @@ const PredictionDataDisplay = (props) => {
     userStakedSum += Number(userStaked[i]);
   }
 
-  const minVaue = utils.fromEthPrice(marketData.neutralMinValue);
-  const maxValue = utils.fromEthPrice(marketData.neutralMaxValue);
-
-  const startPrice = utils.fromEthPrice(resultData.startPrice);
-  const endPrice = utils.fromEthPrice(resultData.endPrice);
+  const startPrice = utils.fromEthPrice(data._startPrice);
+  const endPrice = utils.fromEthPrice(data._endPrice);
 
   const options = [
-    {title: "Bullish", icon: bullish_icon, description: ">$" + maxValue},
-    {title: "Neutral", icon: neutral_icon, description: "$" + minVaue + " to $" + maxValue},
-    {title: "Bearish", icon: bearish_icon, description: "<$" + minVaue}
+    {title: "Bullish", icon: bullish_icon, description: ">=$" + startPrice},
+    {title: "Bearish", icon: bearish_icon, description: "<$" + startPrice}
   ];
   const calculateReward = (option) => {
     if (totalStaked[option] == 0 || totalStakedSum == 0 || userStaked[option] == 0)
@@ -91,14 +86,22 @@ const PredictionDataDisplay = (props) => {
                           (userStakedSum != 0 && userStaked[index] == 0) || (busy>=0 && busy !== index)?
                             <span></span>
                           :
-                            <StakeForm max={maxAsset} option={index} updateStaked={props.updateStaked} predictionData={predictionData} busy={busy} setBusy={setBusy}/>
+                            <StakeForm 
+                              max={maxAsset} 
+                              option={index} 
+                              predData={predData} 
+                              busy={busy} 
+                              setBusy={setBusy}
+                              updateStaked={props.updateStaked}
+                              placePrediction={props.placePrediction}
+                            />
                         }
                       </td>
                     }
                     {endPrice>0 &&
                       <td>
                         {
-                          index==resultData.winningOption && 
+                          index==data._winningOption && 
                           <>
                             <Image src={winner} width={20} height={20} style={{marginRight: 10}} />
                             You rewarded {calculateReward(index)} DAI
@@ -125,4 +128,4 @@ const mapStateToProps = (state) => {
   return { status };
 };
 
-export default connect(mapStateToProps, { setStatus })(PredictionDataDisplay);
+export default connect(mapStateToProps, { setStatus })(PredDataDisplay);

@@ -37,80 +37,6 @@
     "type": "function"
   },
   {
-    "constant": true,
-    "inputs": [],
-    "name": "marketResult",
-    "outputs": [
-      {
-        "name": "winningOption",
-        "type": "uint256"
-      },
-      {
-        "name": "totalReward",
-        "type": "uint256"
-      },
-      {
-        "name": "startPrice",
-        "type": "uint256"
-      },
-      {
-        "name": "endPrice",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "marketData",
-    "outputs": [
-      {
-        "name": "startTime",
-        "type": "uint256"
-      },
-      {
-        "name": "predictionTime",
-        "type": "uint256"
-      },
-      {
-        "name": "endTime",
-        "type": "uint256"
-      },
-      {
-        "name": "neutralMinValue",
-        "type": "uint256"
-      },
-      {
-        "name": "neutralMaxValue",
-        "type": "uint256"
-      },
-      {
-        "name": "neutralRange",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "marketCurrency",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "constant": false,
     "inputs": [
       {
@@ -125,26 +51,27 @@
     "type": "function"
   },
   {
-    "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "name": "startTime",
+        "name": "_marketPair",
         "type": "uint256"
       },
       {
-        "indexed": false,
-        "name": "predictionTime",
+        "name": "_roundId",
         "type": "uint256"
       },
       {
-        "indexed": false,
-        "name": "endTime",
+        "name": "_startTime",
+        "type": "uint256"
+      },
+      {
+        "name": "_duration",
         "type": "uint256"
       }
     ],
-    "name": "MarketCreated",
-    "type": "event"
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor"
   },
   {
     "anonymous": false,
@@ -152,16 +79,6 @@
       {
         "indexed": false,
         "name": "startPrice",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "neutralMinValue",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "neutralMaxValue",
         "type": "uint256"
       }
     ],
@@ -173,12 +90,17 @@
     "inputs": [
       {
         "indexed": false,
-        "name": "totalParticipants",
+        "name": "totalUsers",
         "type": "uint256"
       },
       {
         "indexed": false,
         "name": "totalStaked",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "optionStaked",
         "type": "uint256[]"
       }
     ],
@@ -221,25 +143,8 @@
   },
   {
     "constant": false,
-    "inputs": [
-      {
-        "name": "_startTime",
-        "type": "uint256"
-      },
-      {
-        "name": "_duration",
-        "type": "uint256"
-      },
-      {
-        "name": "_neutralRange",
-        "type": "uint256"
-      },
-      {
-        "name": "registry",
-        "type": "address"
-      }
-    ],
-    "name": "initiate",
+    "inputs": [],
+    "name": "startMarket",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -267,28 +172,14 @@
     "constant": false,
     "inputs": [],
     "name": "endMarket",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_time",
-        "type": "uint256"
-      }
-    ],
-    "name": "getPrice",
     "outputs": [
       {
-        "name": "",
+        "name": "_endPrice",
         "type": "uint256"
       }
     ],
     "payable": false,
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -332,19 +223,51 @@
   {
     "constant": true,
     "inputs": [],
-    "name": "getPredictionData",
+    "name": "getMarketData",
     "outputs": [
       {
-        "name": "totalParticipants",
+        "name": "_roundId",
         "type": "uint256"
       },
       {
-        "name": "totalStaked",
-        "type": "uint256[]"
+        "name": "_startTime",
+        "type": "uint256"
       },
       {
-        "name": "userStaked",
-        "type": "uint256[]"
+        "name": "_midTime",
+        "type": "uint256"
+      },
+      {
+        "name": "_endTime",
+        "type": "uint256"
+      },
+      {
+        "name": "_marketPair",
+        "type": "uint256"
+      },
+      {
+        "name": "_startPrice",
+        "type": "uint256"
+      },
+      {
+        "name": "_endPrice",
+        "type": "uint256"
+      },
+      {
+        "name": "_totalUsers",
+        "type": "uint256"
+      },
+      {
+        "name": "_totalStaked",
+        "type": "uint256"
+      },
+      {
+        "name": "_totalReward",
+        "type": "uint256"
+      },
+      {
+        "name": "_winningOption",
+        "type": "uint256"
       }
     ],
     "payable": false,
@@ -354,46 +277,23 @@
   {
     "constant": true,
     "inputs": [],
-    "name": "getCurrentTime",
+    "name": "getPredictionData",
     "outputs": [
       {
-        "name": "",
+        "name": "_totalUsers",
         "type": "uint256"
+      },
+      {
+        "name": "_totalStaked",
+        "type": "uint256[]"
+      },
+      {
+        "name": "_userStaked",
+        "type": "uint256[]"
       }
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [],
-    "name": "startMarket",
-    "outputs": [
-      {
-        "name": "startPrice",
-        "type": "uint256"
-      },
-      {
-        "name": "neutralMinValue",
-        "type": "uint256"
-      },
-      {
-        "name": "neutralMaxValue",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [],
-    "name": "clearMarket",
-    "outputs": [],
-    "payable": true,
-    "stateMutability": "payable",
     "type": "function"
   }
 ]

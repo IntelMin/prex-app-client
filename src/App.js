@@ -1,23 +1,17 @@
 
 import React from "react";
 import "./assets/scss/app.scss";
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
-import NotFound from "./layout/NotFound";
-import Home from "./pages/Home";
+import { BrowserRouter as Router } from "react-router-dom";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
+import Main from "./Main";
 
 function App() {
   return (
     <Router>
       <div className="app">
         <Header />
-        <div className="main">
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route component={NotFound} />
-          </Switch>
-        </div>
+        <Main />
         <Footer />
       </div>
     </Router>

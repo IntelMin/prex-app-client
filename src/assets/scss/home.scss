@@ -1,9 +1,4 @@
 
-
-.main-container {
-  padding: 20px 50px;
-}
-
 .wallet-desc {
 
   margin-left: auto;
@@ -200,4 +195,10 @@ $btn_radius: 5px;
   .container{
       max-width: 1140px;
   }
+}
+
+.back-link {
+  font-size: 20px;
+  color: cyan;
+  text-decoration: none;
 }

@@ -4,42 +4,34 @@ import check_icon from  "../../assets/images/check.png";
 import { Image, Container, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { setStatus } from '../../redux/actions';
+import * as utils from '../../helpers/utils';
 
 var interval = null;
 
 const MarketDataDisplay = (props) => {
 
   const {data, status} = props;
-  const {marketData, timeOffset} = data;
-  console.log(data);
-  const startTime = (Number(marketData.startTime) + timeOffset)*1000;
-  const predictionTime = (Number(marketData.predictionTime) + timeOffset)*1000;
-  const endTime = (Number(marketData.endTime) + timeOffset)*1000;
+  const startTime = utils.toFixedTimestampMili(data._startTime);
+  const midTime = utils.toFixedTimestampMili(data._midTime);
+  const endTime = utils.toFixedTimestampMili(data._endTime);
   useEffect(() => {
-    if (props.wallet) {
-      if (interval)
-        window.clearInterval(interval);
-      interval = setInterval(() => {
-        var sta = 0;
-        const utcNow = Date.now();
-        if (utcNow < startTime)
-          sta = 1;
-        else if (utcNow < predictionTime)
-          sta = 2;
-        else if (utcNow < endTime)
-          sta = 3;
-        else
-          sta = 4;
-        props.setStatus(sta);
-      }, 1000);
-    }
-  }, [startTime, props.wallet])
+    if (interval)
+      window.clearInterval(interval);
+    interval = setInterval(() => {
+      var sta = 0;
+      const utcNow = Date.now();
+      if (utcNow < startTime)
+        sta = 1;
+      else if (utcNow < midTime)
+        sta = 2;
+      else if (utcNow < endTime)
+        sta = 3;
+      else
+        sta = 4;
+      props.setStatus(sta);
+    }, 1000);
+  }, [])
   
-  const getDateStr = (timestamp) => {
-    console.log(timestamp);
-    const date = new Date(timestamp);
-    return date.toUTCString(); 
-  }
   const renderCheckIcon = () => {
     return (
       <Image src={check_icon} width={20} height={20}/>
@@ -56,6 +48,9 @@ const MarketDataDisplay = (props) => {
   return (
     <Container className="no-padding">
       <Row className="mt-10">
+        <span className="title">{utils.produceMarketName(data)}</span>
+      </Row>
+      <Row className="mt-10">
         <span className="title">Status</span>
         <div className="statusText">{statusText}</div>
       </Row>
@@ -67,17 +62,17 @@ const MarketDataDisplay = (props) => {
         <tbody>
           <tr className={status===1?"active":""}>
             <td>Start at:</td>
-            <td>{getDateStr(startTime)}</td>
+            <td>{utils.toDateStr(data._startTime)}</td>
             <td>{status===1?<Countdown date={startTime}/>:(status>1?renderCheckIcon():null)}</td>
           </tr>
           <tr className={status===2?"active":""}>
             <td>Predict until:</td>
-            <td>{getDateStr(predictionTime)}</td>
-            <td>{status===2?<Countdown date={predictionTime}/>:(status>2?renderCheckIcon():null)}</td>
+            <td>{utils.toDateStr(data._midTime)}</td>
+            <td>{status===2?<Countdown date={midTime}/>:(status>2?renderCheckIcon():null)}</td>
           </tr>
           <tr className={status===3?"active":""}>
             <td>End at:</td>
-            <td>{getDateStr(endTime)}</td>
+            <td>{utils.toDateStr(data._endTime)}</td>
             <td>{status===3?<Countdown date={endTime}/>:(status>3?renderCheckIcon():null)}</td>
           </tr>
         </tbody>
